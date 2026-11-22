@@ -41,7 +41,7 @@ export type SessionUser = {
   id: string;
   email: string;
   name: string;
-  role: "admin";
+  role: "admin" | "operateur";
 };
 
 export type CharacterInput = {
@@ -60,7 +60,7 @@ export type CharacterInput = {
 export type FieldName = "firstName" | "lastName" | "age" | "skills";
 
 export type Result<T> =
-  | { ok: true; data: T; db: Database }
+  | { ok: true; data: T }
   | { ok: false; error: string; field?: FieldName };
 
 export function appreciationLabel(id: Appreciation) {

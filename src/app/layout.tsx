@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s · ADTP Fiches",
   },
   description:
-    "POC de fiches personnages et de compétences pour ADTP. Comptes administrateurs de démonstration, données conservées dans le navigateur.",
+    "POC de fiches personnages et de compétences pour ADTP. Comptes de démonstration, données partagées dans Firestore.",
   applicationName: "ADTP Fiches",
   robots: { index: false, follow: false },
   appleWebApp: {

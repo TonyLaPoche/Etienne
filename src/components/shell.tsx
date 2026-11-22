@@ -8,6 +8,7 @@ import { BootScreen } from "@/components/boot-screen";
 import { Icon } from "@/components/icon";
 import type { MaterialIconName } from "@/components/material-icons";
 import { buttonClass } from "@/components/ui";
+import { roleLabel } from "@/lib/accounts";
 
 const NAV: { href: string; label: string; icon: MaterialIconName }[] = [
   { href: "/fiches", label: "Fiches", icon: "assignment-ind" },
@@ -52,25 +53,30 @@ function AccountActions({ onDone }: { onDone?: () => void }) {
     <div className="space-y-3">
       <p className="text-sm">
         <span className="block font-semibold">{user?.name}</span>
+        <span className="block text-xs font-semibold uppercase tracking-wide text-adtp">
+          {user ? roleLabel(user.role) : ""}
+        </span>
         <span className="break-all text-muted">{user?.email}</span>
       </p>
-      {confirmReset ? (
-        <div className="space-y-2 rounded-xl bg-mist p-3">
-          <p className="text-sm">Les fiches modifiées dans ce navigateur seront remplacées par le jeu de démonstration.</p>
-          {error ? <p className="text-sm font-semibold text-adtp">{error}</p> : null}
-          <button type="button" className={buttonClass("danger", "w-full")} onClick={handleReset}>
-            Confirmer
+      {user?.role === "admin" ? (
+        confirmReset ? (
+          <div className="space-y-2 rounded-xl bg-mist p-3">
+            <p className="text-sm">Les fiches et les compétences de Firestore seront remplacées par le jeu de démonstration.</p>
+            {error ? <p className="text-sm font-semibold text-adtp">{error}</p> : null}
+            <button type="button" className={buttonClass("danger", "w-full")} onClick={handleReset}>
+              Confirmer
+            </button>
+            <button type="button" className={buttonClass("ghost", "w-full")} onClick={() => setConfirmReset(false)}>
+              Annuler
+            </button>
+          </div>
+        ) : (
+          <button type="button" className={buttonClass("ghost", "w-full")} onClick={() => setConfirmReset(true)}>
+            <Icon name="restart-alt" className="size-5" />
+            Réinitialiser la démo
           </button>
-          <button type="button" className={buttonClass("ghost", "w-full")} onClick={() => setConfirmReset(false)}>
-            Annuler
-          </button>
-        </div>
-      ) : (
-        <button type="button" className={buttonClass("ghost", "w-full")} onClick={() => setConfirmReset(true)}>
-          <Icon name="restart-alt" className="size-5" />
-          Réinitialiser la démo
-        </button>
-      )}
+        )
+      ) : null}
       <button type="button" className={buttonClass("secondary", "w-full")} onClick={handleLogout}>
         <Icon name="logout" className="size-5" />
         Se déconnecter
@@ -81,7 +87,7 @@ function AccountActions({ onDone }: { onDone?: () => void }) {
 
 export function Shell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const { storageOk } = useAtelier();
+  const { syncError } = useAtelier();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -148,9 +154,9 @@ export function Shell({ children }: { children: ReactNode }) {
             <Icon name="person" />
           </button>
         </header>
-        {!storageOk ? (
+        {syncError ? (
           <p className="bg-burgundy px-4 py-2 text-sm text-white" role="status">
-            Ce navigateur ne conserve pas les données. Les fiches resteront le temps de la visite.
+            {syncError}
           </p>
         ) : null}
         <main id="contenu" className="mx-auto w-full max-w-5xl px-4 pb-28 pt-4 lg:px-8 lg:pb-10 lg:pt-8">

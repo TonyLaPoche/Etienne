@@ -6,9 +6,10 @@ import { useAtelier } from "@/components/atelier-provider";
 import { BootScreen } from "@/components/boot-screen";
 import { Icon } from "@/components/icon";
 import { Button, Field, controlClass } from "@/components/ui";
-import { demoAccounts } from "@/lib/backend";
+import { staffAccounts } from "@/lib/firebase";
+import { roleLabel } from "@/lib/accounts";
 
-const ACCOUNTS = demoAccounts();
+const ACCOUNTS = staffAccounts();
 
 export function LoginView() {
   const { ready, user, login } = useAtelier();
@@ -57,9 +58,9 @@ export function LoginView() {
       </section>
       <section className="px-4 py-6 lg:grid lg:place-items-center lg:px-10">
         <div className="mx-auto w-full max-w-md -mt-6 rounded-2xl bg-white p-4 shadow-sm lg:mt-0 lg:p-6">
-          <h2 className="font-display text-2xl text-burgundy">Connexion administrateur</h2>
+          <h2 className="font-display text-2xl text-burgundy">Connexion</h2>
           <p className="mt-1 text-sm text-muted">
-            Deux comptes sont enregistrés en dur dans le service local. Les fiches restent dans ce navigateur.
+            Compte Firebase, e-mail et mot de passe. Les fiches et les compétences sont enregistrées dans Firestore.
           </p>
           <form className="mt-5 space-y-4" onSubmit={onSubmit}>
             <Field label="Identifiant" htmlFor="email">
@@ -98,7 +99,7 @@ export function LoginView() {
             </Button>
           </form>
           <div className="mt-6 space-y-2 border-t border-line pt-4">
-            <p className="text-sm font-semibold">Comptes de démonstration</p>
+            <p className="text-sm font-semibold">Comptes ADTP</p>
             {ACCOUNTS.map((account) => (
               <button
                 key={account.email}
@@ -113,6 +114,7 @@ export function LoginView() {
               >
                 <span>
                   <span className="block font-semibold">{account.name}</span>
+                  <span className="block text-xs font-semibold uppercase tracking-wide text-adtp">{roleLabel(account.role)}</span>
                   <span className="block break-all text-sm text-muted">
                     {account.email} · {account.password}
                   </span>

@@ -16,4 +16,4 @@ Les icônes sont un sous-ensemble de Material Symbols Outlined, intégré dans `
 
 Les couleurs viennent du site ADTP (https://www.adtp.com/) : rouge `#E74536`, bordeaux `#6F2D2F`, gris `#444A4F`. Le bleu `#0F548B` et le vert `#1A8B53` de leurs blocs savoir-faire servent aux graphiques et aux indicateurs.
 
-Hébergement cible : GitHub Pages, export statique (`output: "export"`). Pas de serveur : authentification et fiches vivent dans le navigateur, avec deux comptes administrateurs en dur.
+Hébergement cible : GitHub Pages, export statique (`output: "export"`). L'authentification est Firebase Auth (e-mail et mot de passe) sur le projet `manutio`. Les fiches et les compétences sont dans Firestore (`personnages`, `competences`), partagées entre les comptes connectés. Admin : `admin@adtp.com`. Opérateur : `etienne@adtp.com`.
